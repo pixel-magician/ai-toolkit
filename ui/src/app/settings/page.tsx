@@ -36,7 +36,7 @@ export default function Settings() {
     <>
       <TopBar>
         <div>
-          <h1 className="text-lg">Settings</h1>
+          <h1 className="text-lg">设置</h1>
         </div>
         <div className="flex-1"></div>
       </TopBar>
@@ -49,12 +49,12 @@ export default function Settings() {
                   <label htmlFor="HF_TOKEN" className="block text-sm font-medium mb-2">
                     Hugging Face Token
                     <div className="text-gray-500 text-sm ml-1">
-                      Create a Read token on{' '}
+                      将{' '}
                       <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noreferrer">
                         {' '}
                         Huggingface
                       </a>{' '}
-                      if you need to access gated/private models.
+                      的令牌粘贴到这里。
                     </div>
                   </label>
                   <input
@@ -64,16 +64,15 @@ export default function Settings() {
                     value={settings.HF_TOKEN}
                     onChange={handleChange}
                     className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-gray-600 focus:border-transparent"
-                    placeholder="Enter your Hugging Face token"
+                    placeholder="输入您的 Hugging Face 令牌"
                   />
                 </div>
 
                 <div>
                   <label htmlFor="TRAINING_FOLDER" className="block text-sm font-medium mb-2">
-                    Training Folder Path
+                    训练文件夹路径
                     <div className="text-gray-500 text-sm ml-1">
-                      We will store your training information here. Must be an absolute path. If blank, it will default
-                      to the output folder in the project root.
+                      我们将在这里存储您的训练信息。必须是绝对路径。如果为空，它将默认使用项目根目录中的输出文件夹。
                     </div>
                   </label>
                   <input
@@ -83,18 +82,17 @@ export default function Settings() {
                     value={settings.TRAINING_FOLDER}
                     onChange={handleChange}
                     className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-gray-600 focus:border-transparent"
-                    placeholder="Enter training folder path"
+                    placeholder="输入训练文件夹路径"
                   />
                 </div>
 
                 <div>
                   <label htmlFor="DATASETS_FOLDER" className="block text-sm font-medium mb-2">
-                    Dataset Folder Path
+                    数据集文件夹路径
                     <div className="text-gray-500 text-sm ml-1">
-                      Where we store and find your datasets.{' '}
+                      我们将在这里存储和查找您的数据集。{' '}
                       <span className="text-orange-800">
-                        Warning: This software may modify datasets so it is recommended you keep a backup somewhere else
-                        or have a dedicated folder for this software.
+                        警告：此软件可能会修改数据集，因此建议您将备份存储在其他地方或为此软件使用专用文件夹。
                       </span>
                     </div>
                   </label>
@@ -105,7 +103,7 @@ export default function Settings() {
                     value={settings.DATASETS_FOLDER}
                     onChange={handleChange}
                     className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-gray-600 focus:border-transparent"
-                    placeholder="Enter datasets folder path"
+                    placeholder="输入数据集文件夹路径"
                   />
                 </div>
               </div>
@@ -117,11 +115,11 @@ export default function Settings() {
             disabled={status === 'saving'}
             className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {status === 'saving' ? 'Saving...' : 'Save Settings'}
+            {status === 'saving' ? '正在保存...' : '保存'}
           </button>
 
-          {status === 'success' && <p className="text-green-500 text-center">Settings saved successfully!</p>}
-          {status === 'error' && <p className="text-red-500 text-center">Error saving settings. Please try again.</p>}
+          {status === 'success' && <p className="text-green-500 text-center">设置已成功保存！</p>}
+          {status === 'error' && <p className="text-red-500 text-center">保存设置时出错。请重试。</p>}
         </form>
       </MainContent>
     </>

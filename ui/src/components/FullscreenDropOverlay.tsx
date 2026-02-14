@@ -158,15 +158,15 @@ export default function FullscreenDropOverlay({
             <FaUpload className="size-10 opacity-80" />
             {!isUploading ? (
               <>
-                <p className="text-lg font-semibold">Drop files to upload</p>
+                <p className="text-lg font-semibold">将文件拖放到此处上传</p>
                 <p className="text-sm opacity-80">
-                  Destination:&nbsp;<span className="font-mono">{datasetName || 'unknown'}</span>
+                  目标：&nbsp;<span className="font-mono">{datasetName || '未知'}</span>
                 </p>
-                <p className="text-xs opacity-70 mt-1">Images, videos, or .txt supported</p>
+                <p className="text-xs opacity-70 mt-1">支持图片、视频或.txt文件</p>
               </>
             ) : (
               <>
-                <p className="text-lg font-semibold">Uploading… {uploadProgress}%</p>
+                <p className="text-lg font-semibold">上传中… {uploadProgress}%</p>
                 <div className="w-full h-2.5 bg-white/20 rounded-full overflow-hidden">
                   <div
                     className="h-2.5 bg-blue-500 rounded-full transition-[width] duration-150 ease-linear"

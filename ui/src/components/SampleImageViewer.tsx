@@ -270,12 +270,12 @@ export default function SampleImageViewer({
                     <div
                       className="cursor-pointer text-gray-200"
                       onClick={() => {
-                        let message = `Are you sure you want to delete this sample? This action cannot be undone.`;
+                        let message = `确定要删除此示例吗？此操作无法撤销。`;
                         openConfirm({
-                          title: 'Delete Sample',
+                          title: '删除示例',
                           message: message,
                           type: 'warning',
-                          confirmText: 'Delete',
+                          confirmText: '删除',
                           onConfirm: () => {
                             apiClient
                               .post('/api/img/delete', { imgPath: imgPath })
@@ -293,7 +293,7 @@ export default function SampleImageViewer({
                         });
                       }}
                     >
-                      Delete Sample
+                      删除示例
                     </div>
                   </MenuItem>
                 </MenuItems>

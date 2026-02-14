@@ -192,7 +192,7 @@ export default function JobLossGraph({ job }: Props) {
       <div className="bg-gray-800 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-blue-400" />
-          <h2 className="text-gray-100 text-sm font-medium">Loss graph</h2>
+          <h2 className="text-gray-100 text-sm font-medium">损失图</h2>
           <span className="text-xs text-gray-400">
             {status === 'loading' && 'Loading...'}
             {status === 'refreshing' && 'Refreshing...'}
@@ -207,7 +207,7 @@ export default function JobLossGraph({ job }: Props) {
           onClick={refreshLoss}
           className="px-3 py-1 rounded-md text-xs bg-gray-700/60 hover:bg-gray-700 text-gray-200 border border-gray-700"
         >
-          Refresh
+          刷新
         </button>
       </div>
 
@@ -216,7 +216,7 @@ export default function JobLossGraph({ job }: Props) {
         <div className="bg-gray-950 rounded-lg border border-gray-800 h-96 relative">
           {!hasData ? (
             <div className="h-full w-full flex items-center justify-center text-sm text-gray-400">
-              {status === 'error' ? 'Failed to load loss logs.' : 'Waiting for loss points...'}
+              {status === 'error' ? '加载损失日志失败' : '等待损失数据点...'}
             </div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
@@ -249,7 +249,7 @@ export default function JobLossGraph({ job }: Props) {
                     fontSize: 12,
                   }}
                   labelStyle={{ color: 'rgba(255,255,255,0.75)' }}
-                  labelFormatter={(label: any) => `step ${label}`}
+                  labelFormatter={(label: any) => `步骤 ${label}`}
                   formatter={(value: any, name: any) => [formatNum(Number(value)), name]}
                 />
 
@@ -301,19 +301,19 @@ export default function JobLossGraph({ job }: Props) {
       <div className="px-4 pb-2">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div className="bg-gray-950 border border-gray-800 rounded-lg p-3">
-            <label className="block text-xs text-gray-400 mb-2">Display</label>
+            <label className="block text-xs text-gray-400 mb-2">显示</label>
             <div className="flex flex-wrap gap-2">
-              <ToggleButton checked={showSmoothed} onClick={() => setShowSmoothed(v => !v)} label="Smoothed" />
-              <ToggleButton checked={showRaw} onClick={() => setShowRaw(v => !v)} label="Raw" />
+              <ToggleButton checked={showSmoothed} onClick={() => setShowSmoothed(v => !v)} label="平滑" />
+              <ToggleButton checked={showRaw} onClick={() => setShowRaw(v => !v)} label="原始" />
               <ToggleButton checked={useLogScale} onClick={() => setUseLogScale(v => !v)} label="Log Y" />
-              <ToggleButton checked={clipOutliers} onClick={() => setClipOutliers(v => !v)} label="Clip outliers" />
+              <ToggleButton checked={clipOutliers} onClick={() => setClipOutliers(v => !v)} label="裁剪异常值" />
             </div>
           </div>
 
           <div className="bg-gray-950 border border-gray-800 rounded-lg p-3">
-            <label className="block text-xs text-gray-400 mb-2">Series</label>
+            <label className="block text-xs text-gray-400 mb-2">损失序列</label>
             {lossKeys.length === 0 ? (
-              <div className="text-sm text-gray-400">No loss keys found yet.</div>
+              <div className="text-sm text-gray-400">暂无损失键值</div>
             ) : (
               <div className="flex flex-wrap gap-2">
                 {lossKeys.map(k => (
@@ -340,7 +340,7 @@ export default function JobLossGraph({ job }: Props) {
 
           <div className="bg-gray-950 border border-gray-800 rounded-lg p-3">
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-xs text-gray-400">Smoothing</label>
+              <label className="block text-xs text-gray-400">平滑</label>
               <span className="text-xs text-gray-300">{smoothing}%</span>
             </div>
             <input
@@ -356,8 +356,8 @@ export default function JobLossGraph({ job }: Props) {
 
           <div className="bg-gray-950 border border-gray-800 rounded-lg p-3">
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-xs text-gray-400">Plot stride</label>
-              <span className="text-xs text-gray-300">every {plotStride} pt</span>
+              <label className="block text-xs text-gray-400">绘制步长</label>
+              <span className="text-xs text-gray-300">每 {plotStride} 点</span>
             </div>
             <input
               type="range"
@@ -367,13 +367,15 @@ export default function JobLossGraph({ job }: Props) {
               onChange={e => setPlotStride(Number(e.target.value))}
               className="w-full accent-blue-500"
             />
-            <div className="mt-2 text-[11px] text-gray-500">UI downsample for huge runs.</div>
+            <div className="mt-2 text-[11px] text-gray-500">
+              用于大型训练任务的 UI 下采样。
+            </div>
           </div>
 
           <div className="bg-gray-950 border border-gray-800 rounded-lg p-3 md:col-span-2">
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-xs text-gray-400">Window (last N points)</label>
-              <span className="text-xs text-gray-300">{windowSize === 0 ? 'all' : windowSize.toLocaleString()}</span>
+              <label className="block text-xs text-gray-400">窗口 (最近 N 个点)</label>
+              <span className="text-xs text-gray-300">{windowSize === 0 ? '所有' : windowSize.toLocaleString()}</span>
             </div>
             <input
               type="range"
@@ -385,7 +387,7 @@ export default function JobLossGraph({ job }: Props) {
               className="w-full accent-blue-500"
             />
             <div className="mt-2 text-[11px] text-gray-500">
-              Set to 0 to show all (not recommended for very long runs).
+              设置为 0 以显示所有点（不建议用于非常长的训练任务）。
             </div>
           </div>
         </div>

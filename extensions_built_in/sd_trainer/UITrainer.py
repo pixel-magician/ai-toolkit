@@ -31,7 +31,7 @@ class UITrainer(SDTrainer):
         # Track all async tasks
         self._async_tasks = []
         # Initialize the status
-        self._run_async_operation(self._update_status("running", "Starting"))
+        self._run_async_operation(self._update_status("running", "正在启动"))
         self._stop_watcher_started = False
         # self.start_stop_watcher(interval_sec=2.0)
     
@@ -55,7 +55,7 @@ class UITrainer(SDTrainer):
                     # Mark and update status (non-blocking; uses existing infra)
                     self.is_stopping = True
                     self._run_async_operation(
-                        self._update_status("stopped", "Job stopped (remote)")
+                        self._update_status("stopped", "任务已停止 (远程)")
                     )
                     # Best-effort flush pending async ops
                     try:
@@ -130,12 +130,12 @@ class UITrainer(SDTrainer):
     def maybe_stop(self):
         if self.should_stop():
             self._run_async_operation(
-                self._update_status("stopped", "Job stopped"))
+                self._update_status("stopped", "任务已停止"))
             self.is_stopping = True
             raise Exception("Job stopped")
         if self.should_return_to_queue():
             self._run_async_operation(
-                self._update_status("queued", "Job queued"))
+                self._update_status("queued", "任务已排队"))
             self.is_stopping = True
             raise Exception("Job returning to queue")
 
@@ -238,7 +238,7 @@ class UITrainer(SDTrainer):
 
     def done_hook(self):
         super(UITrainer, self).done_hook()
-        self.update_status("completed", "Training completed")
+        self.update_status("completed", "训练已完成")
         # Wait for all async operations to finish before shutting down
         asyncio.run(self.wait_for_all_async())
         self.thread_pool.shutdown(wait=True)
@@ -251,18 +251,18 @@ class UITrainer(SDTrainer):
     def hook_before_model_load(self):
         super().hook_before_model_load()
         self.maybe_stop()
-        self.update_status("running", "Loading model")
+        self.update_status("running", "正在加载模型")
 
     def before_dataset_load(self):
         super().before_dataset_load()
         self.maybe_stop()
-        self.update_status("running", "Loading dataset")
+        self.update_status("running", "正在加载数据集")
 
     def hook_before_train_loop(self):
         super().hook_before_train_loop()
         self.maybe_stop()
         self.update_step()
-        self.update_status("running", "Training")
+        self.update_status("running", "正在训练")
         self.timer.add_after_print_hook(self.handle_timing_print_hook)
 
     def status_update_hook_func(self, string):
@@ -277,19 +277,19 @@ class UITrainer(SDTrainer):
         super().sample_step_hook(img_num, total_imgs)
         self.maybe_stop()
         self.update_status(
-            "running", f"Generating images - {img_num + 1}/{total_imgs}")
+            "running", f"正在生成图像 - {img_num + 1}/{total_imgs}")
 
     def sample(self, step=None, is_first=False):
         self.maybe_stop()
         total_imgs = len(self.sample_config.prompts)
-        self.update_status("running", f"Generating images - 0/{total_imgs}")
+        self.update_status("running", f"正在生成图像 - 0/{total_imgs}")
         super().sample(step, is_first)
         self.maybe_stop()
-        self.update_status("running", "Training")
+        self.update_status("running", "正在训练")
 
     def save(self, step=None):
         self.maybe_stop()
-        self.update_status("running", "Saving model")
+        self.update_status("running", "正在保存模型")
         super().save(step)
         self.maybe_stop()
-        self.update_status("running", "Training")
+        self.update_status("running", "正在训练")

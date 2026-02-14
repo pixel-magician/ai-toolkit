@@ -25,26 +25,26 @@ interface Page {
 
 const pages: Page[] = [
   {
-    name: 'Overview',
+    name: '概览',
     value: 'overview',
     component: JobOverview,
     mainCss: 'pt-24',
   },
   {
-    name: 'Samples',
+    name: '样本',
     value: 'samples',
     component: SampleImages,
     menuItem: SampleImagesMenu,
     mainCss: 'pt-24',
   },
   {
-    name: 'Loss Graph',
+    name: '损失图',
     value: 'loss_log',
     component: JobLossGraph,
     mainCss: 'pt-24',
   },
   {
-    name: 'Config File',
+    name: '配置文件',
     value: 'config',
     component: JobConfigViewer,
     mainCss: 'pt-[80px] px-0 pb-0',
@@ -69,7 +69,7 @@ export default function JobPage({ params }: { params: { jobID: string } }) {
           </Button>
         </div>
         <div>
-          <h1 className="text-lg">Job: {job?.name}</h1>
+          <h1 className="text-lg">任务: {job?.name}</h1>
         </div>
         <div className="flex-1"></div>
         {job && (
@@ -85,8 +85,8 @@ export default function JobPage({ params }: { params: { jobID: string } }) {
         )}
       </TopBar>
       <MainContent className={pages.find(page => page.value === pageKey)?.mainCss}>
-        {status === 'loading' && job == null && <p>Loading...</p>}
-        {status === 'error' && job == null && <p>Error fetching job</p>}
+        {status === 'loading' && job == null && <p>加载中...</p>}
+        {status === 'error' && job == null && <p>获取任务失败</p>}
         {job && (
           <>
             {pages.map(page => {

@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: { jobID: s
     data: {
       stop: true,
       status: 'stopped',
-      info: 'Job stopped',
+      info: '任务已停止',
     },
   });
 

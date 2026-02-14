@@ -15,7 +15,7 @@ export async function GET(request: NextRequest, { params }: { params: { jobID: s
     where: { id: jobID },
     data: {
       stop: true,
-      info: 'Stopping job...',
+      info: '正在停止任务...',
     },
   });
 

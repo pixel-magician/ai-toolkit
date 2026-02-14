@@ -82,6 +82,25 @@ export default function JobOverview({ job }: JobOverviewProps) {
     status = 'stopping';
   }
 
+  const getStatusText = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'running':
+        return '运行中';
+      case 'stopping':
+        return '停止中';
+      case 'stopped':
+        return '已停止';
+      case 'completed':
+        return '已完成';
+      case 'error':
+        return '出错';
+      case 'queued':
+        return '排队中';
+      default:
+        return status;
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
       {/* Job Information Panel */}
@@ -90,16 +109,16 @@ export default function JobOverview({ job }: JobOverviewProps) {
           <h2 className="text-gray-100">
             <Info className="w-5 h-5 mr-2 -mt-1 text-amber-400 inline-block" /> {job.info}
           </h2>
-          <span className={`px-3 py-1 rounded-full text-sm ${getStatusColor(job.status)}`}>{job.status}</span>
+          <span className={`px-3 py-1 rounded-full text-sm ${getStatusColor(job.status)}`}>{getStatusText(job.status)}</span>
         </div>
 
         <div className="p-4 space-y-6 flex flex-col flex-grow">
           {/* Progress Bar */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-400">Progress</span>
+              <span className="text-gray-400">进度</span>
               <span className="text-gray-200">
-                Step {job.step} of {totalSteps}
+                步骤 {job.step} / {totalSteps}
               </span>
             </div>
             <div className="w-full bg-gray-800 rounded-full h-2">
@@ -112,7 +131,7 @@ export default function JobOverview({ job }: JobOverviewProps) {
             <div className="flex items-center space-x-4">
               <HardDrive className="w-5 h-5 text-blue-400" />
               <div>
-                <p className="text-xs text-gray-400">Job Name</p>
+                <p className="text-xs text-gray-400">任务名称</p>
                 <p className="text-sm font-medium text-gray-200">{job.name}</p>
               </div>
             </div>
@@ -120,7 +139,7 @@ export default function JobOverview({ job }: JobOverviewProps) {
             <div className="flex items-center space-x-4">
               <Cpu className="w-5 h-5 text-purple-400" />
               <div>
-                <p className="text-xs text-gray-400">Assigned GPUs</p>
+                <p className="text-xs text-gray-400">已分配 GPU</p>
                 <p className="text-sm font-medium text-gray-200">GPUs: {job.gpu_ids}</p>
               </div>
             </div>
@@ -128,7 +147,7 @@ export default function JobOverview({ job }: JobOverviewProps) {
             <div className="flex items-center space-x-4">
               <Gauge className="w-5 h-5 text-green-400" />
               <div>
-                <p className="text-xs text-gray-400">Speed</p>
+                <p className="text-xs text-gray-400">速度</p>
                 <p className="text-sm font-medium text-gray-200">{job.speed_string == '' ? '?' : job.speed_string}</p>
               </div>
             </div>
@@ -141,8 +160,8 @@ export default function JobOverview({ job }: JobOverviewProps) {
               className="text-xs text-gray-300 absolute inset-0 p-4 overflow-y-auto"
               onScroll={handleScroll}
             >
-              {statusLog === 'loading' && 'Loading log...'}
-              {statusLog === 'error' && 'Error loading log'}
+              {statusLog === 'loading' && '正在加载日志...'}
+              {statusLog === 'error' && '加载日志出错'}
               {['success', 'refreshing'].includes(statusLog) && (
                 <div>
                   {logLines.map((line, index) => {

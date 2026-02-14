@@ -121,9 +121,9 @@ export default function TrainingForm() {
       })
       .catch(error => {
         if (error.response?.status === 409) {
-          alert('Training name already exists. Please choose a different name.');
+          alert('训练任务名称已存在。请选择不同的名称。');
         } else {
-          alert('Failed to save job. Please try again.');
+          alert('保存训练任务失败。请重试。');
         }
         console.log('Error saving training:', error);
       })
@@ -148,7 +148,7 @@ export default function TrainingForm() {
           </Button>
         </div>
         <div>
-          <h1 className="text-lg">{runId ? 'Edit Training Job' : 'New Training Job'}</h1>
+          <h1 className="text-lg">{runId ? '编辑训练任务' : '新建训练任务'}</h1>
         </div>
         <div className="flex-1"></div>
         {showAdvancedView && (
@@ -201,7 +201,7 @@ export default function TrainingForm() {
             className="text-gray-200 bg-gray-800 px-3 py-1 rounded-md"
             onClick={() => setShowAdvancedView(!showAdvancedView)}
           >
-            {showAdvancedView ? 'Show Simple' : 'Show Advanced'}
+            {showAdvancedView ? '显示简单模式' : '显示高级模式'}
           </Button>
         </div>
         <div>
@@ -210,7 +210,7 @@ export default function TrainingForm() {
             onClick={() => saveJob()}
             disabled={status === 'saving'}
           >
-            {status === 'saving' ? 'Saving...' : runId ? 'Update Job' : 'Create Job'}
+            {status === 'saving' ? '保存中...' : runId ? '更新任务' : '创建任务'}
           </Button>
         </div>
       </TopBar>
@@ -235,7 +235,7 @@ export default function TrainingForm() {
           <ErrorBoundary
             fallback={
               <div className="flex items-center justify-center h-64 text-lg text-red-600 font-medium bg-red-100 dark:bg-red-900/20 dark:text-red-400 border border-red-300 dark:border-red-700 rounded-lg">
-                Advanced job detected. Please switch to advanced view to continue.
+                检测到高级任务配置。请切换到高级模式以继续。
               </div>
             }
           >
