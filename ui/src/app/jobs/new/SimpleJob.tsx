@@ -493,6 +493,7 @@ export default function SimpleJob({
                     { value: 'adamw8bit', label: 'AdamW8Bit' },
                     { value: 'adafactor', label: 'Adafactor' },
                     { value: 'adamw', label: 'AdamW' },
+                    { value: 'adamwfp8', label: 'AdamWFP8' },
                   ]}
                 />
                 <NumberInput
