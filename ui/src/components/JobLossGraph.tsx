@@ -194,11 +194,11 @@ export default function JobLossGraph({ job }: Props) {
           <div className="h-2 w-2 rounded-full bg-blue-400" />
           <h2 className="text-gray-100 text-sm font-medium">损失图</h2>
           <span className="text-xs text-gray-400">
-            {status === 'loading' && 'Loading...'}
-            {status === 'refreshing' && 'Refreshing...'}
-            {status === 'error' && 'Error'}
-            {status === 'success' && hasData && `${chartData.length.toLocaleString()} steps`}
-            {status === 'success' && !hasData && 'No data yet'}
+            {status === 'loading' && '正在加载...'}
+            {status === 'refreshing' && '正在刷新...'}
+            {status === 'error' && '错误'}
+            {status === 'success' && hasData && `${chartData.length.toLocaleString()} 步`}
+            {status === 'success' && !hasData && '暂无数据'}
           </span>
         </div>
 
