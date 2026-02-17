@@ -11,7 +11,7 @@ import classNames from 'classnames';
 
 export interface ConfirmState {
   title: string;
-  message?: string;
+  message?: string | React.ReactNode;
   confirmText?: string;
   type?: 'danger' | 'warning' | 'info';
   inputTitle?: string;

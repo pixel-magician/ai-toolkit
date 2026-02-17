@@ -65,7 +65,11 @@ export default function JobActionBar({
             if (!canStop) return;
             openConfirm({
               title: '停止任务',
-              message: `确定要停止任务 "${job.name}"吗？您可以稍后恢复。`,
+              message: (
+                <>
+                  确定要停止任务 <span className="font-semibold text-blue-300">"{job.name}"</span>吗？您可以稍后恢复。
+                </>
+              ),
               type: 'info',
               confirmText: '停止',
               onConfirm: async () => {
@@ -91,13 +95,16 @@ export default function JobActionBar({
       )}
       <Button
         onClick={() => {
-          let message = `确定要删除任务 "${job.name}"吗？这将永久删除任务并从磁盘中删除。`;
-          if (job.status === 'running') {
-            message += ' 警告：任务当前正在运行。如果可以，请先停止任务。';
-          }
           openConfirm({
             title: '删除任务',
-            message: message,
+            message: (
+              <>
+                确定要删除任务 <span className="font-semibold text-yellow-300">"{job.name}"</span>吗？这将永久删除任务并从磁盘中删除。
+                {job.status === 'running' && (
+                  <span className="block mt-1"> 警告：任务当前正在运行。如果可以，请先停止任务。</span>
+                )}
+              </>
+            ),
             type: 'warning',
             confirmText: '删除',
             onConfirm: async () => {
@@ -132,10 +139,13 @@ export default function JobActionBar({
             <div
               className="cursor-pointer px-4 py-1 hover:bg-gray-800 rounded text-gray-200"
               onClick={() => {
-                let message = `确定要将任务 "${job.name}"标记为已停止吗？如果任务状态为“挂起”，则会将任务状态设置为“已停止”。只有在确定任务已停止且无法恢复时才执行此操作。这不会停止任务。`;
                 openConfirm({
                   title: '将任务标记为已停止',
-                  message: message,
+                  message: (
+                    <>
+                      确定要将任务 <span className="font-semibold text-yellow-300">"{job.name}"</span>标记为已停止吗？如果任务状态为"挂起"，则会将任务状态设置为"已停止"。只有在确定任务已停止且无法恢复时才执行此操作。这不会停止任务。
+                    </>
+                  ),
                   type: 'warning',
                   confirmText: '标记为已停止',
                   onConfirm: async () => {

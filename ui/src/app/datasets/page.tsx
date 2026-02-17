@@ -53,7 +53,11 @@ export default function Datasets() {
   const handleDeleteDataset = (datasetName: string) => {
     openConfirm({
       title: '删除数据集',
-      message: `确定要删除数据集 "${datasetName}" 吗？此操作无法撤销。`,
+      message: (
+        <>
+          确定要删除数据集 <span className="font-semibold text-yellow-300">"{datasetName}"</span> 吗？此操作无法撤销。
+        </>
+      ),
       type: 'warning',
       confirmText: '删除',
       onConfirm: () => {
