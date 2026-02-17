@@ -4,6 +4,13 @@ os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
 import sys
 from typing import Union, OrderedDict
 from dotenv import load_dotenv
+
+# 设置标准输出为 UTF-8 编码，确保中文正确显示
+if sys.platform == 'win32':
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
 # Load the .env file if it exists
 load_dotenv()
 

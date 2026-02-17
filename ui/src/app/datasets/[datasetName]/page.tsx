@@ -13,7 +13,7 @@ import FullscreenDropOverlay from '@/components/FullscreenDropOverlay';
 export default function DatasetPage({ params }: { params: { datasetName: string } }) {
   const [imgList, setImgList] = useState<{ img_path: string }[]>([]);
   const usableParams = use(params as any) as { datasetName: string };
-  const datasetName = usableParams.datasetName;
+  const datasetName = decodeURIComponent(usableParams.datasetName);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const refreshImageList = (dbName: string) => {
@@ -70,7 +70,7 @@ export default function DatasetPage({ params }: { params: { datasetName: string 
     if (status == 'success' && imgList.length === 0) {
       icon = <LuImageOff className="w-8 h-8" />;
       text = '未找到图片';
-      subtitle = '此数据集为空。点击“添加图片”开始。';
+      subtitle = '此数据集为空。点击"添加图片"开始。';
       showIt = true;
       bgColor = 'bg-gray-50 dark:bg-gray-800/50';
       textColor = 'text-gray-900 dark:text-gray-100';

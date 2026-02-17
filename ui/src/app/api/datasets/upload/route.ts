@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       const buffer = Buffer.from(bytes);
 
       // Clean filename and ensure it's unique
-      const fileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const fileName = file.name.replace(/[^\w\u4e00-\u9fa5.-]/g, '_');
       const filePath = join(uploadDir, fileName);
 
       await writeFile(filePath, buffer);

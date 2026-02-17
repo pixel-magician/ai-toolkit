@@ -7,8 +7,8 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     let { name } = body;
-    // clean name by making lower case,  removing special characters, and replacing spaces with underscores
-    name = name.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+    // clean name by removing special characters, and replacing spaces with underscores
+    name = name.replace(/[^\w\u4e00-\u9fa5]+/g, '_');
 
     let datasetsPath = await getDatasetsRoot();
     let datasetPath = path.join(datasetsPath, name);
