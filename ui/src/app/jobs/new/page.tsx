@@ -46,15 +46,18 @@ export default function TrainingForm() {
     setDatasetOptions(datasetOptions);
     const defaultDatasetPath = defaultDatasetConfig.folder_path;
 
-    for (let i = 0; i < jobConfig.config.process[0].datasets.length; i++) {
-      const dataset = jobConfig.config.process[0].datasets[i];
-      if (dataset.folder_path === defaultDatasetPath) {
-        if (datasetOptions.length > 0) {
-          setJobConfig(datasetOptions[0].value, `config.process[0].datasets[${i}].folder_path`);
+    // 仅在新建任务（没有 runId 和 cloneId）时，才设置默认数据集
+    if (!runId && !cloneId) {
+      for (let i = 0; i < jobConfig.config.process[0].datasets.length; i++) {
+        const dataset = jobConfig.config.process[0].datasets[i];
+        if (dataset.folder_path === defaultDatasetPath) {
+          if (datasetOptions.length > 0) {
+            setJobConfig(datasetOptions[0].value, `config.process[0].datasets[${i}].folder_path`);
+          }
         }
       }
     }
-  }, [datasets, settings, isSettingsLoaded, datasetFetchStatus]);
+  }, [datasets, settings, isSettingsLoaded, datasetFetchStatus, runId, cloneId]);
 
   // clone existing job
   useEffect(() => {
