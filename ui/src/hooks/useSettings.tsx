@@ -27,9 +27,9 @@ export default function useSettings() {
           TRAINING_FOLDER: data.TRAINING_FOLDER || '',
           DATASETS_FOLDER: data.DATASETS_FOLDER || '',
         });
-        setIsLoaded(true);
       })
-      .catch(error => console.error('Error fetching settings:', error));
+      .catch(error => console.error('Error fetching settings:', error))
+      .finally(() => setIsLoaded(true));
   }, []);
 
   return { settings, setSettings, isSettingsLoaded };

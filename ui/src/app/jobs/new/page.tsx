@@ -19,6 +19,7 @@ import SimpleJob from './SimpleJob';
 import AdvancedJob from './AdvancedJob';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { apiClient } from '@/utils/api';
+import Loading from '@/components/Loading';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -215,7 +216,11 @@ export default function TrainingForm() {
         </div>
       </TopBar>
 
-      {showAdvancedView ? (
+      {!isSettingsLoaded || !isGPUInfoLoaded || datasetFetchStatus === 'loading' ? (
+        <div className="flex justify-center items-center h-full">
+          <Loading />
+        </div>
+      ) : showAdvancedView ? (
         <div className="pt-[48px] absolute top-0 left-0 w-full h-full overflow-auto">
           <AdvancedJob
             jobConfig={jobConfig}
