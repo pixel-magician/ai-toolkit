@@ -36,18 +36,17 @@ const yamlConfig: YAML.DocumentOptions &
 
 export default function AdvancedJob({ jobConfig, setJobConfig, settings }: Props) {
   const [editorValue, setEditorValue] = useState<string>('');
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const [showFallback, setShowFallback] = useState(false);
   const lastJobConfigUpdateStringRef = useRef('');
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track if the editor has been mounted
   const isEditorMounted = useRef(false);
 
-  // Handler for editor mounting
-  const handleEditorDidMount: OnMount = editor => {
-    editorRef.current = editor;
-    isEditorMounted.current = true;
-
-    // Initial content setup
+  // Initialize editor value immediately on component mount
+  useEffect(() => {
     try {
       const yamlContent = YAML.stringify(jobConfig, yamlConfig);
       setEditorValue(yamlContent);
@@ -55,6 +54,51 @@ export default function AdvancedJob({ jobConfig, setJobConfig, settings }: Props
     } catch (e) {
       console.warn(e);
     }
+  }, [jobConfig]);
+
+  // Set a timeout to show fallback if editor takes too long to load
+  useEffect(() => {
+    timeoutRef.current = setTimeout(() => {
+      if (!editorLoaded) {
+        console.warn('Monaco Editor taking too long to load, showing fallback');
+        setShowFallback(true);
+      }
+    }, 5000);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [editorLoaded]);
+
+  // Handler for editor mounting
+  const handleEditorDidMount: OnMount = editor => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    editorRef.current = editor;
+    isEditorMounted.current = true;
+    setEditorLoaded(true);
+    setShowFallback(false);
+
+    // Ensure editor has the correct content
+    try {
+      const yamlContent = YAML.stringify(jobConfig, yamlConfig);
+      if (editor.getValue() !== yamlContent) {
+        editor.setValue(yamlContent);
+      }
+      lastJobConfigUpdateStringRef.current = JSON.stringify(jobConfig);
+    } catch (e) {
+      console.warn(e);
+    }
+  };
+
+  // Fallback textarea handler
+  const handleFallbackChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setEditorValue(value);
+    handleChange(value);
   };
 
   useEffect(() => {
@@ -127,20 +171,39 @@ export default function AdvancedJob({ jobConfig, setJobConfig, settings }: Props
 
   return (
     <>
-      <Editor
-        height="100%"
-        width="100%"
-        defaultLanguage="yaml"
-        value={editorValue}
-        theme="vs-dark"
-        onChange={handleChange}
-        onMount={handleEditorDidMount}
-        options={{
-          minimap: { enabled: true },
-          scrollBeyondLastLine: false,
-          automaticLayout: true,
-        }}
-      />
+      {showFallback ? (
+        <div className="w-full h-full flex flex-col">
+          <div className="p-2 bg-yellow-900/30 border-b border-yellow-700 text-yellow-300 text-sm">
+            编辑器加载超时，使用备用编辑模式
+          </div>
+          <textarea
+            value={editorValue}
+            onChange={handleFallbackChange}
+            className="flex-1 w-full bg-gray-900 text-gray-100 font-mono text-sm p-4 resize-none focus:outline-none"
+            spellCheck={false}
+          />
+        </div>
+      ) : (
+        <Editor
+          height="100%"
+          width="100%"
+          defaultLanguage="yaml"
+          value={editorValue}
+          theme="vs-dark"
+          onChange={handleChange}
+          onMount={handleEditorDidMount}
+          loading={
+            <div className="flex items-center justify-center h-full">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          }
+          options={{
+            minimap: { enabled: true },
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+          }}
+        />
+      )}
     </>
   );
 }
